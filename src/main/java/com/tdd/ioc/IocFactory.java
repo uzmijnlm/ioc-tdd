@@ -17,6 +17,11 @@ public class IocFactory {
     }
 
     public <T> T getInstance(Class<T> aClass) {
-        return (T) map.get(aClass);
+        T instance = (T) map.get(aClass);
+        if (instance == null) {
+            throw new RuntimeException();
+        } else {
+            return (T) map.get(aClass);
+        }
     }
 }
