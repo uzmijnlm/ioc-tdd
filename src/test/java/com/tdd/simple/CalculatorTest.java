@@ -31,4 +31,13 @@ public class CalculatorTest {
 
         Assert.assertEquals(2, result);
     }
+
+    @Test
+    public void test4() {
+        Calculator calculator = new Calculator();
+
+        int result = calculator.calculate("1+2");
+
+        Assert.assertEquals(3, result);
+    }
 }
