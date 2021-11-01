@@ -29,6 +29,7 @@ public class IocFactoryTest {
         Address address2 = iocFactory.getInstance(Address.class);
 
         Assert.assertNotNull(address1);
+        Assert.assertNotNull(address2);
         Assert.assertSame(address1, address2);
     }
 
@@ -37,5 +38,18 @@ public class IocFactoryTest {
         IocFactory iocFactory = new IocFactory();
 
         iocFactory.getInstance(Address.class);
+    }
+
+    @Test
+    public void testProtoType() {
+        IocFactory iocFactory = new IocFactory();
+        iocFactory.bind(Address.class, Scope.PROTOTYPE);
+
+        Address address1 = iocFactory.getInstance(Address.class);
+        Address address2 = iocFactory.getInstance(Address.class);
+
+        Assert.assertNotNull(address1);
+        Assert.assertNotNull(address2);
+        Assert.assertNotSame(address1, address2);
     }
 }
