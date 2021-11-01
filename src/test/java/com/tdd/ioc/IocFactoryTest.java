@@ -31,4 +31,11 @@ public class IocFactoryTest {
         Assert.assertNotNull(address1);
         Assert.assertSame(address1, address2);
     }
+
+    @Test(expected = Exception.class)
+    public void testNotBind() {
+        IocFactory iocFactory = new IocFactory();
+
+        iocFactory.getInstance(Address.class);
+    }
 }
