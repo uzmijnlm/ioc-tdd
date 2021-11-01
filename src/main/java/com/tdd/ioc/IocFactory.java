@@ -8,22 +8,36 @@ public class IocFactory {
     private final Map<Class<?>, Object> map = new HashMap<>();
     private final Map<Class<?>, Scope> scopeMap = new HashMap<>();
 
-    public <T> void bind(Class<T> aClass) {
-        bind(aClass, Scope.SINGLETON);
+    public IocFactory() {
+
     }
 
-    public <T> void bind(Class<T> aClass, Scope scope) {
-        if (scope == Scope.SINGLETON) {
-            try {
-                T newInstance = aClass.newInstance();
-                map.put(aClass, newInstance);
+    public IocFactory(Configurable configurable) {
+        Binder binder = new Binder() {
+            @Override
+            public <T> BinderBuilder<T> bind(Class<T> aClass) {
+                try {
+                    map.put(aClass, aClass.newInstance());
+                } catch (InstantiationException | IllegalAccessException e) {
+                    throw new RuntimeException();
+                }
                 scopeMap.put(aClass, Scope.SINGLETON);
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException();
+
+                return new BinderBuilder<T>() {
+
+                    @Override
+                    public void byInstance(T preDefinedAddress) {
+                        map.put(aClass, preDefinedAddress);
+                    }
+
+                    @Override
+                    public void scope(Scope scope) {
+                        scopeMap.put(aClass, scope);
+                    }
+                };
             }
-        } else {
-            scopeMap.put(aClass, Scope.PROTOTYPE);
-        }
+        };
+        configurable.configure(binder);
     }
 
     public <T> T getInstance(Class<T> aClass) {
