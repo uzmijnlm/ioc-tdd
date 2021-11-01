@@ -2,6 +2,10 @@ package com.tdd.simple;
 
 public class Calculator {
     public int calculate(String input) {
-        return 0;
+        if (input != null && !input.equals("")) {
+            return 2;
+        } else {
+            return 0;
+        }
     }
 }

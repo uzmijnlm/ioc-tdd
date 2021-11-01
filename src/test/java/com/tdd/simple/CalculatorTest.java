@@ -22,4 +22,13 @@ public class CalculatorTest {
 
         Assert.assertEquals(0, result);
     }
+
+    @Test
+    public void test3() {
+        Calculator calculator = new Calculator();
+
+        int result = calculator.calculate("1+1");
+
+        Assert.assertEquals(2, result);
+    }
 }
