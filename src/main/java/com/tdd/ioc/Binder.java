@@ -7,5 +7,6 @@ public interface Binder {
     interface BinderBuilder<T> {
         void byInstance(T preDefinedAddress);
         void scope(Scope prototype);
+        void byCreator(Creator<T> creator);
     }
 }

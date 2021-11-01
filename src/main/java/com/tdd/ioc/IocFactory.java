@@ -41,6 +41,11 @@ public class IocFactory {
                             });
                         }
                     }
+
+                    @Override
+                    public void byCreator(Creator<T> creator) {
+                        map.put(aClass, creator);
+                    }
                 };
             }
         };
