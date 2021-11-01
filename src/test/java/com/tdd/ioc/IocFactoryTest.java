@@ -9,9 +9,11 @@ public class IocFactoryTest {
 
     @Test
     public void testGetInstance() {
-        IocFactory iocFactory = new IocFactory();
-        iocFactory.bind(Address.class);
-        iocFactory.bind(Person.class);
+        IocFactory iocFactory = new IocFactory(binder -> {
+            binder.bind(Address.class);
+            binder.bind(Person.class);
+        });
+
 
         Address address = iocFactory.getInstance(Address.class);
         Person person = iocFactory.getInstance(Person.class);
@@ -22,8 +24,9 @@ public class IocFactoryTest {
 
     @Test
     public void testGetSingleton() {
-        IocFactory iocFactory = new IocFactory();
-        iocFactory.bind(Address.class);
+        IocFactory iocFactory = new IocFactory(binder -> {
+            binder.bind(Address.class);
+        });
 
         Address address1 = iocFactory.getInstance(Address.class);
         Address address2 = iocFactory.getInstance(Address.class);
@@ -42,8 +45,9 @@ public class IocFactoryTest {
 
     @Test
     public void testProtoType() {
-        IocFactory iocFactory = new IocFactory();
-        iocFactory.bind(Address.class, Scope.PROTOTYPE);
+        IocFactory iocFactory = new IocFactory(binder -> {
+            binder.bind(Address.class).scope(Scope.PROTOTYPE);
+        });
 
         Address address1 = iocFactory.getInstance(Address.class);
         Address address2 = iocFactory.getInstance(Address.class);
@@ -51,5 +55,18 @@ public class IocFactoryTest {
         Assert.assertNotNull(address1);
         Assert.assertNotNull(address2);
         Assert.assertNotSame(address1, address2);
+    }
+
+    @Test
+    public void testByInstance() {
+        Address preDefinedAddress = new Address();
+
+        IocFactory iocFactory = new IocFactory(binder -> {
+            binder.bind(Address.class).byInstance(preDefinedAddress);
+        });
+
+        Address address = iocFactory.getInstance(Address.class);
+
+        Assert.assertSame(preDefinedAddress, address);
     }
 }
