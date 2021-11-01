@@ -19,4 +19,16 @@ public class IocFactoryTest {
         Assert.assertNotNull(address);
         Assert.assertNotNull(person);
     }
+
+    @Test
+    public void testGetSingleton() {
+        IocFactory iocFactory = new IocFactory();
+        iocFactory.bind(Address.class);
+
+        Address address1 = iocFactory.getInstance(Address.class);
+        Address address2 = iocFactory.getInstance(Address.class);
+
+        Assert.assertNotNull(address1);
+        Assert.assertSame(address1, address2);
+    }
 }
